@@ -1,0 +1,4 @@
+click
+exifread
+-U googlemaps
+requests
