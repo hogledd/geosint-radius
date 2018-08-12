@@ -44,36 +44,14 @@ TODO: extend to consider virtual (i.e. social media) search patterns
 
 """
 
-import click
 import utils
-from scrape import *
+import scrape
+import click
 
 @click.command()
-@click.option('--source', prompt='url > ', help='The URL you wish to scrape for exif locations.')
-@click.option('--transport', prompt='transport > ', help='The target mode of transport.')
-
-def scrapeCoords(url):
-    # check for valid URL
-    if utils.checkValidURL(url) == True:
-        # check if valid image
-        # pull EXIF data
-        return getImageCoords(url)
-        # check for valid coordinates
-        # return coordinates
-    else:
-        error_code = 'Invalid URL'
-        return error_code
-    print(url)
-
-def lookupSpeed(mode):
-    # check for valid mode
-    # lookup speed
-    # check for valid speed
-    # return speed
-    return 20
-    print(mode)
-
-def getSearchRadius(source,transport):
+@click.option('--source', prompt='url > ', help='The image URL you wish to scrape for EXIF GPS Coordinates.')
+@click.option('--transport', prompt='transport > ', help='The target\'s mode of transport at time of photo.')
+def getSearchRadius(source, transport):
     coords = scrapeCoords(source)
     transport_speed = lookupSpeed(transport)
     time_delta = current_time - time_zero
@@ -90,6 +68,27 @@ def getSearchRadius(source,transport):
     print('Establish a perimeter at > ')
 
     print('Additional evidence suggests widening (changing) the search area to > ')
+
+def scrapeCoords(url):
+    # check for valid URL
+    if utils.checkValidURL(url) == True:
+        # check if valid image
+        # pull EXIF data
+        return scrape.getImageCoords(url)
+        # check for valid coordinates
+        # return coordinates
+    else:
+        error_code = 'Invalid URL'
+        return error_code
+    print(url)
+
+def lookupSpeed(mode):
+    # check for valid mode
+    # lookup speed
+    # check for valid speed
+    # return speed
+    return 20
+    print(mode)
 
 if __name__ == '__main__':
     getSearchRadius()
