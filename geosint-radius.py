@@ -44,17 +44,22 @@ TODO: extend to consider virtual (i.e. social media) search patterns
 
 """
 
+import datetime
+import click
 import utils
 import scrape
-import click
 
 @click.command()
 @click.option('--source', prompt='url > ', help='The image URL you wish to scrape for EXIF GPS Coordinates.')
 @click.option('--transport', prompt='transport > ', help='The target\'s mode of transport at time of photo.')
-def getSearchRadius(source, transport):
-    coords = scrapeCoords(source)
-    transport_speed = lookupSpeed(transport)
+def main(source, transport):
+    coords = scrape_coords(source)
+    transport_speed = lookup_speed(transport)
+    time_zero = scrape_time(source)
+
+    current_time = datetime.datetime.now()
     time_delta = current_time - time_zero
+
     radius = transport_speed * time_delta
     area = (radius * 3.14)^2
 
@@ -69,20 +74,22 @@ def getSearchRadius(source, transport):
 
     print('Additional evidence suggests widening (changing) the search area to > ')
 
-def scrapeCoords(url):
+
+def scrape_coords(URL):
     # check for valid URL
-    if utils.checkValidURL(url) == True:
+    if utils.check_valid_URL(URL) == True:
         # check if valid image
         # pull EXIF data
-        return scrape.getImageCoords(url)
+        return scrape.get_image_coords(url)
         # check for valid coordinates
         # return coordinates
     else:
         error_code = 'Invalid URL'
         return error_code
-    print(url)
+    print(URL)
 
-def lookupSpeed(mode):
+
+def lookup_speed(mode):
     # check for valid mode
     # lookup speed
     # check for valid speed
@@ -90,5 +97,6 @@ def lookupSpeed(mode):
     return 20
     print(mode)
 
+
 if __name__ == '__main__':
-    getSearchRadius()
+    main()

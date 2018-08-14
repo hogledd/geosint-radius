@@ -12,12 +12,17 @@ address geocoding
 
 """
 import requests
-#URL = 'https://www.instagram.com'
-address = ''
-lat = ''
-lon = ''
 
-def checkValidURL(URL):
+
+def main():
+    URL = 'https://www.instagram.com'
+    check_valid_URL(URL)
+    address = ''
+    lat = ''
+    lon = ''
+
+
+def check_valid_URL(URL):
     # use get request to check for status code 200
     r = requests.get(URL)
     if r.status_code == requests.codes.ok:
@@ -25,18 +30,24 @@ def checkValidURL(URL):
     else:
         return False
     # return URL
-    print (URL)
+    print(URL)
 
-def convertCoordsToAddress(lat,lon):
+
+def convert_coords_to_address(lat,lon):
     # check for valid lat and lon
     # check for endpoint connection
     # use geoAPI to get address
     # return address
-    print (address)
+    print(address)
 
-def convertAddressToCoords(address):
+
+def convert_address_to_coords(address):
     # check for valid address
     # check for endpoint connection
     # use geoAPI to get coords
     # return lat, lon
-    print (lat,lon)
+    print(lat,lon)
+
+
+if __name__ == '__main__':
+    main()

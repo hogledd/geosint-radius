@@ -10,7 +10,13 @@ from PIL import Image
 from PIL.ExifTags import TAGS, GPSTAGS
 import urllib.request
 
-URL = 'https://readexifdata.com/examples/Example%20Niagara%20Falls.JPG'
+
+def main():
+    URL = 'https://readexifdata.com/examples/Example%20Niagara%20Falls.JPG'
+    img = get_image(URL)
+    exif_data = get_exif_data(img)
+    print(get_lat_lon(exif_data))
+
 
 def get_image(URL):
     with urllib.request.urlopen(URL) as url:
@@ -19,6 +25,7 @@ def get_image(URL):
 
             # img = Image.open('temp.jpg')
             return Image.open('temp.jpg')
+
 
 def get_exif_data(image):
     """Returns a dictionary from the exif data of an PIL Image item. Also converts the GPS Tags"""
@@ -47,7 +54,7 @@ def _get_if_exist(data, key):
     return None
 
 
-def _convert_to_degress(value):
+def _convert_to_degrees(value):
     """Helper function to convert the GPS coordinates stored in the EXIF to degress in float format"""
     d0 = value[0][0]
     d1 = value[0][1]
@@ -65,7 +72,8 @@ def _convert_to_degress(value):
 
 
 def get_lat_lon(exif_data):
-    """Returns the latitude and longitude, if available, from the provided exif_data (obtained through get_exif_data above)"""
+    """Returns the latitude and longitude, if available,
+    from the provided exif_data (obtained through get_exif_data above)"""
     lat = None
     lon = None
 
@@ -78,23 +86,23 @@ def get_lat_lon(exif_data):
         gps_longitude_ref = _get_if_exist(gps_info, 'GPSLongitudeRef')
 
         if gps_latitude and gps_latitude_ref and gps_longitude and gps_longitude_ref:
-            lat = _convert_to_degress(gps_latitude)
+            lat = _convert_to_degrees(gps_latitude)
             if gps_latitude_ref != "N":
                 lat = 0 - lat
 
-            lon = _convert_to_degress(gps_longitude)
+            lon = _convert_to_degrees(gps_longitude)
             if gps_longitude_ref != "E":
                 lon = 0 - lon
 
     return lat, lon
 
-def getImageCoords(URL):
+
+def get_image_coords(URL):
     img = get_image(URL)
     exif_data = get_exif_data(img)
     return get_lat_lon(exif_data)
 
 
-# if __name__ == "__main__":
-#     img = get_image(URL)
-#     exif_data = get_exif_data(img)
-#     print(get_lat_lon(exif_data))
+if __name__ == "__main__":
+    main()
+
