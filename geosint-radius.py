@@ -51,7 +51,8 @@ import scrape
 
 @click.command()
 @click.option('--source', prompt='url > ', help='The image URL you wish to scrape for EXIF GPS Coordinates.')
-@click.option('--transport', prompt='transport > ', help='The target\'s mode of transport at time of photo.')
+@click.option('--transport', prompt='transport > ', help='The target\'s fastest available mode of transport '
+                                                         'at time of photo.')
 def main(source, transport):
     coords = scrape_coords(source)
     transport_speed = lookup_speed(transport)
@@ -86,6 +87,7 @@ def scrape_coords(URL):
     else:
         error_code = 'Invalid URL'
         return error_code
+
     print(URL)
 
 
@@ -94,7 +96,11 @@ def lookup_speed(mode):
     # lookup speed
     # check for valid speed
     # return speed
-    return 20
+    if mode:
+        return 20
+    else:
+        return 40
+
     print(mode)
 
 
